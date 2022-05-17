@@ -1,0 +1,8 @@
+C:\Users\g50021858.CHINA\Source\Repos\number-Conversion\bin\Debug\number-Conversion.exe.config
+C:\Users\g50021858.CHINA\Source\Repos\number-Conversion\bin\Debug\number-Conversion.exe
+C:\Users\g50021858.CHINA\Source\Repos\number-Conversion\bin\Debug\number-Conversion.pdb
+C:\Users\g50021858.CHINA\Source\Repos\number-Conversion\obj\Debug\number-Conversion.csproj.AssemblyReference.cache
+C:\Users\g50021858.CHINA\Source\Repos\number-Conversion\obj\Debug\number-Conversion.csproj.SuggestedBindingRedirects.cache
+C:\Users\g50021858.CHINA\Source\Repos\number-Conversion\obj\Debug\number-Conversion.csproj.CoreCompileInputs.cache
+C:\Users\g50021858.CHINA\Source\Repos\number-Conversion\obj\Debug\number-Conversion.exe
+C:\Users\g50021858.CHINA\Source\Repos\number-Conversion\obj\Debug\number-Conversion.pdb
