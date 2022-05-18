@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
-namespace number_Conversion
+
+
+namespace baseConverter
 {
-    internal class Program
+    public class Class1
     {
         static void Main()
         {
@@ -15,7 +18,7 @@ namespace number_Conversion
             string preparedInput = "";
 
             Console.Write("Which Base do you want to convert to: Hex or Oct: ");
-            string newBase = Console.ReadLine().ToLower();
+            string  newBase = Console.ReadLine().ToLower();
 
             Console.Write("Enter a binary number: ");
             string testInput = Console.ReadLine();
@@ -27,11 +30,10 @@ namespace number_Conversion
             {
                 input = testInput;
                 preparedInput = input;
-                
+
             }
             while (!checkInput)
             {
-                throw new FormatException("Wrong Input, Enter a binary number: ", e);
                 Console.Write("Wrong Input, Enter a binary number: ");
                 testInput = Console.ReadLine();
                 checkInput = CheckInputs(testInput);
@@ -46,7 +48,8 @@ namespace number_Conversion
             preparedInput = PrepareBinary(input, preparedInput, newBase);
 
             //dividing the binary into subsets of 3's
-            List<List<char>> Result = DivideBinary(preparedInput, newBase);
+ 
+            List<int> Result = DivideBinary(preparedInput, newBase);
 
             //converting binary to octal
             string finalBaseNumber = newBase == "hex" ? BinaryToHex(Result) : BinaryToOctal(Result);
@@ -79,83 +82,74 @@ namespace number_Conversion
         //function to prepare the binary input for octal / hexadecimal conversion
         private static string PrepareBinary(string arg, string preparedInput, string newBase)
 
-        
-        { 
-           int divisor = newBase == "hex" ? 4 : 3;
+
+        {
+            int divisor = newBase == "hex" ? 4 : 3;
 
             int count = arg.Count();
             int remainder = count % divisor;
-            if(remainder == 0)
+            if (remainder == 0)
             {
                 return preparedInput;
             }
             for (int i = 0; i < (divisor - remainder); i++)
             {
                 preparedInput = "0" + preparedInput;
-                
+
             }
             return preparedInput;
         }
 
-        private static List<List<char>> DivideBinary(string preparedInput, string newBase)
+        private static List<int> DivideBinary(string preparedInput, string newBase)
         {
             int divisor = newBase == "hex" ? 4 : 3;
             char[] binary = preparedInput.ToCharArray();
-            List<char> binaryPair = new List<char>();
-            List<List<char>> result = new List<List<char>>();
-            for (int i = 1; i < binary.Length + 1; i++)
-            {
-                if (i % divisor != 0)
-                {
-                    binaryPair.Add(binary[i - 1]);
-                }
-                else
-                {
-                    binaryPair.Add(binary[i - 1]);
-                    List<char> clone = new List<char>(binaryPair);
-                    result.Add(clone);
-                    binaryPair.Clear();
- 
-                }
 
-            }
-            return result;
+            var d = binary.Select((v, i) => new { index = i, value = v }).GroupBy(x => x.index / divisor, x =>
+            {
+                double pow = divisor - ((x.index % divisor) + 1);
+               int c = Convert.ToInt32(Math.Pow(2, pow));
+                int y = int.Parse(x.value.ToString());
+                return y * c;
+            }, (x, v) => v.Sum()
+
+            );
+
+            var v = d.ToList();
+            return v;
         }
 
         //function to convert binary to Octal
-        private static string BinaryToOctal(List<List<char>> Result)
+        private static string BinaryToOctal(List<int> Result)
         {
+            Console.WriteLine(Result);
             string final = "";
             for (int i = 0; i < Result.Count; i++)
             {
-                int ans = int.Parse(Result[i][0].ToString()) * 4 + int.Parse(Result[i][1].ToString()) * 2 +
-                    int.Parse(Result[i][2].ToString()) * 1;
-
-                final += ans.ToString();
+                final += Result[i].ToString();
             }
             return final;
         }
 
-        private static string BinaryToHex(List<List<char>> Result)
+        private static string BinaryToHex(List<int> Result)
         {
+            Console.WriteLine(Result);
+            
             char[] map = { 'A', 'B', 'C', 'D', 'E', 'F' };
             string final = "";
             for (int i = 0; i < Result.Count; i++)
             {
-                int ans = int.Parse(Result[i][0].ToString()) * 8 + int.Parse(Result[i][1].ToString()) * 4 + 
-                    int.Parse(Result[i][2].ToString()) * 2 + int.Parse(Result[i][3].ToString()) * 1;
-                if (ans > 9)
+                if (Result[i] > 9)
                 {
-                    int value = ans - 10;
+                    int value = Result[i] - 10;
                     final += map[value].ToString();
                 }
                 else
                 {
-                    final += ans.ToString();
+                    final += Result[i].ToString();
                 }
             }
             return final;
         }
-
     }
 }
